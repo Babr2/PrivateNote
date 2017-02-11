@@ -470,6 +470,10 @@
         return @[deleteAction];
     }
 }
+//加上此方法修复真机无法左滑的bug
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+}
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (tableView==_tbView) {
@@ -529,4 +533,22 @@
     UIActivityViewController *activity=[[UIActivityViewController alloc] initWithActivityItems:@[image] applicationActivities:nil];
     [self presentViewController:activity animated:YES completion:nil];
 }
+#pragma MFMailComposeViewControllerDelegate
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
+    
+    if (result==MFMailComposeResultSent) {
+        
+        HUDSuccess(@"发送成功")
+    }
+    else if(result==MFMailComposeResultFailed){
+        
+        HUDError(error.localizedDescription)
+    }
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    [self.view.window endEditing:YES];
+}
+
 @end
