@@ -27,14 +27,26 @@
 @implementation SettingViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
     
+    [super viewDidLoad];
+    [self createUI];
     [self createTableView];
 }
 -(void)setup{
     
     [super setup];
     _dataArray=@[@[NSLocalizedString(@"云同步",nil)],@[NSLocalizedString(@"启动打开新标签",nil),NSLocalizedString(@"设置密码",nil)],@[NSLocalizedString(@"问题反馈",nil),NSLocalizedString(@"分享应用",nil)]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin) name:kUerdidLoginNotifaction object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLoginOut) name:kUserdidLoginoutNotfifaction object:nil];
+}
+-(void)createUI{
+
+    UIButton *btn=[[UIButton alloc] initWithFrame:CGRectMake(20, 20, 40, 40)];
+    [btn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc] initWithCustomView:btn];
+    
     _editSwitch=[UISwitch new];
     _passWordSwitch=[UISwitch new];
     BOOL opened1=[[NSUserDefaults standardUserDefaults] boolForKey:@"edit_open"];
@@ -43,9 +55,12 @@
     BOOL opened2=[[NSUserDefaults standardUserDefaults] boolForKey:@"password_open"];
     [_passWordSwitch addTarget:self action:@selector(passwordChooseAction:) forControlEvents:UIControlEventTouchUpInside];
     _passWordSwitch.on=opened2;
+}
+-(void)backAction{
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin) name:kUerdidLoginNotifaction object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLoginOut) name:kUserdidLoginoutNotfifaction object:nil];
+    [UserDefault setInteger:0 forKey:@"seletedIndex"];
+    [UserDefault synchronize];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)userDidLogin{
     
@@ -147,7 +162,7 @@
 //        make.left.right.equalTo(wkself.view);
 //        make.top.equalTo(wkself.view).offset(64);
 //        make.bottom.equalTo(wkself.view).offset(-44);
-        make.edges.equalTo(wkself.view).insets(UIEdgeInsetsMake(64, 0, 44, 0));//上，左，下，右。逆时针顺序
+        make.edges.equalTo(wkself.view).insets(UIEdgeInsetsMake(64, 0, 0, 0));//上，左，下，右。逆时针顺序
     }];
     _tbView.backgroundColor=[UIColor colorWithWhite:0.98 alpha:1.0];
     

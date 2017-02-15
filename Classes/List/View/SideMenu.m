@@ -7,6 +7,7 @@
 //
 
 #import "SideMenu.h"
+#import "SideView.h"
 
 @interface SideMenu()
 
@@ -16,8 +17,9 @@
 
 @end
 
-UIView  *sideView=nil;
-BOOL    hasShow=NO;
+SideView    *sideView=nil;
+BOOL        hasShow=NO;
+UIControl   *back;
 
 @implementation SideMenu
 
@@ -25,17 +27,20 @@ BOOL    hasShow=NO;
     
     if (!sideView) {
         
-        UIView *menu=[[UIView alloc] initWithFrame:CGRectZero];
-        menu.backgroundColor=kRed;
-        sideView=menu;
         UIWindow *widow=[UIApplication sharedApplication].keyWindow;
-        [widow addSubview:menu];
-        [menu mas_makeConstraints:^(MASConstraintMaker *make) {
-            
-            make.left.top.bottom.equalTo(widow);
-            make.width.equalTo(@(kSideWidth));
-        }];
-        hasShow=YES;
+        back=[[UIControl alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
+        back.alpha=0;
+        [back addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
+        back.backgroundColor=[UIColor blackColor];
+        [widow addSubview:back];
+        
+        sideView=[[SideView alloc] initWithFrame:CGRectMake(-kSideWidth,0,kSideWidth,kHeight)];
+        [widow addSubview:sideView];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(screenDidRatated:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        
+        [self showSide];
+        
     }else{
         
         if (hasShow) {
@@ -43,22 +48,43 @@ BOOL    hasShow=NO;
             [self hide];
             return;
         }
-        UIWindow *widow=[UIApplication sharedApplication].keyWindow;
-        [sideView updateConstraints:^(MASConstraintMaker *make) {
-           
-            make.left.equalTo(widow);
-        }];
-        hasShow=YES;
+        [self showSide];
     }
+}
++(void)showSide{
     
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        sideView.frame=CGRectMake(0,0,kSideWidth,kHeight);
+        back.alpha=0.3;
+    }];
+    hasShow=YES;
 }
 +(void)hide{
     
-    UIWindow *widow=[UIApplication sharedApplication].keyWindow;
-    [sideView updateConstraints:^(MASConstraintMaker *make) {
-        
-        make.right.equalTo(widow.left);
+    [UIView animateWithDuration:0.3 animations:^{
+       
+        sideView.frame=CGRectMake(-kSideWidth,0,kSideWidth,kHeight);
+        back.alpha=0;
     }];
     hasShow=NO;
 }
+
++(void)screenDidRatated:(NSNotification *)sender{
+    
+    UIInterfaceOrientation orentation=[UIApplication sharedApplication].statusBarOrientation;
+    if(UIInterfaceOrientationIsPortrait(orentation)){
+        
+        CGRect frm=sideView.frame;
+        frm.size=CGSizeMake(kSideWidth, kHeight);
+        sideView.frame=frm;
+        
+    }else if(UIInterfaceOrientationIsLandscape(orentation)){
+        
+        CGRect frm=sideView.frame;
+        frm.size=CGSizeMake(kSideWidth, kWidth);
+        sideView.frame=frm;
+    }
+}
+
 @end

@@ -26,7 +26,6 @@
 
 @implementation ListViewController
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
@@ -183,8 +182,6 @@
 
 -(void)addBtnClickAction{
     
-    [SideMenu show];
-    return;
     kWeakSelf(wkself)
     EditViewController *edit=[[EditViewController alloc] init];
     NSString *folderName=[[NSUserDefaults standardUserDefaults] objectForKey:kCurrentFolderName];

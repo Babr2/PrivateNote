@@ -23,6 +23,8 @@
     
     self.view.backgroundColor=[UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets=NO;
+    
+    
 }
 
 

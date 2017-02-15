@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18F0070D1E5416BA008F0491 /* SideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F0070C1E5416B9008F0491 /* SideView.m */; };
 		855219531E4F5B5900DD5550 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 855219521E4F5B5900DD5550 /* menu.png */; };
 		855219561E504EBF00DD5550 /* SideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 855219551E504EBF00DD5550 /* SideMenu.m */; };
 		85DB81A71E4DFB680015A93D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DB81A61E4DFB680015A93D /* main.m */; };
@@ -139,6 +140,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18F0070B1E5416B9008F0491 /* SideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideView.h; sourceTree = "<group>"; };
+		18F0070C1E5416B9008F0491 /* SideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideView.m; sourceTree = "<group>"; };
 		855219521E4F5B5900DD5550 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
 		855219541E504EBF00DD5550 /* SideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenu.h; sourceTree = "<group>"; };
 		855219551E504EBF00DD5550 /* SideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenu.m; sourceTree = "<group>"; };
@@ -511,6 +514,8 @@
 			children = (
 				855219541E504EBF00DD5550 /* SideMenu.h */,
 				855219551E504EBF00DD5550 /* SideMenu.m */,
+				18F0070B1E5416B9008F0491 /* SideView.h */,
+				18F0070C1E5416B9008F0491 /* SideView.m */,
 				85DB81DC1E4DFC510015A93D /* FolderTableView.h */,
 				85DB81DD1E4DFC510015A93D /* FolderTableView.m */,
 				85DB81DE1E4DFC510015A93D /* ListCell.h */,
@@ -924,7 +929,7 @@
 				TargetAttributes = {
 					85DB81A11E4DFB680015A93D = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = 4RM8PCALL7;
+						DevelopmentTeam = 9P9D2224EQ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1015,6 +1020,7 @@
 				85DB82F31E4DFC510015A93D /* View+MASAdditions.m in Sources */,
 				85DB83101E4DFC510015A93D /* NSString+Vaild.m in Sources */,
 				85DB82B71E4DFC510015A93D /* AppDelegate.m in Sources */,
+				18F0070D1E5416BA008F0491 /* SideView.m in Sources */,
 				85DB82B51E4DFC510015A93D /* User.m in Sources */,
 				85DB82A91E4DFC510015A93D /* Note.m in Sources */,
 				85DB82F81E4DFC510015A93D /* NSData+ImageContentType.m in Sources */,
@@ -1199,7 +1205,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4RM8PCALL7;
+				DEVELOPMENT_TEAM = 9P9D2224EQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Third/SMS_SDK",
@@ -1220,7 +1226,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4RM8PCALL7;
+				DEVELOPMENT_TEAM = 9P9D2224EQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Third/SMS_SDK",

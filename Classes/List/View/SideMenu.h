@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#define kSideWidth  (2/3*kWidth)
-
+#define kSideWidth  (kWidth*2/3)
+//#define kSideWidth  (2/3*kWidth) 等价于 0*kWidth
 @interface SideMenu : NSObject
 
 

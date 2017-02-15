@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "MyTabBarController.h"
 #import <SMS_SDK/SMSSDK.h>
-
+#import "ListViewController.h"
 
 @interface AppDelegate ()
 
@@ -21,7 +21,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [self configThirdSDK];
-    self.window.rootViewController=[MyTabBarController new];
+//    self.window.rootViewController=[MyTabBarController new];
+    UINavigationController *navi=[[UINavigationController alloc]  initWithRootViewController:[ListViewController new]];
+    self.window.rootViewController=navi;
+    [UserDefault setInteger:0 forKey:@"seletedIndex"];
+    [UserDefault synchronize];
     
     return YES;
 }
