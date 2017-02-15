@@ -13,6 +13,7 @@
 #import "SearchController.h"
 #import "ZHTextView.h"
 #import <MessageUI/MessageUI.h>
+#import "SideMenu.h"
 
 @interface ListViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate>
 
@@ -20,7 +21,6 @@
 @property(nonatomic,strong)FolderTableView      *folderTableView;
 @property(nonatomic,assign)BOOL                 isShowFolderView;
 @property(nonatomic,strong)UIControl            *backView;
-
 
 @end
 
@@ -42,6 +42,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTbViewAction:) name:@"refreshTbView" object:nil];
     [_tbView reloadData];
 }
+
 //tbview排序
 -(void)sortTbView{
     
@@ -149,7 +150,7 @@
                                                                imgName:@"nav_search"
                                                                 target:self
                                                                 action:@selector(searchBtnClickAction)];
-    self.navigationItem.rightBarButtonItem=[Tool barButtomItemWithTitle:nil
+    UIBarButtonItem *addItem=[Tool barButtomItemWithTitle:nil
                                                                 imgName:@"daohanglan-edit"
                                                                  target:self
                                                                  action:@selector(addBtnClickAction)];
@@ -166,12 +167,24 @@
     folderBtn.titleLabel.font=[UIFont systemFontOfSize:15];
     [topView addSubview:arrowDownImv];
     [topView addSubview:folderBtn];
-    [self.navigationItem setTitleView:topView];
+    [self.navigationItem setTitleView:topView];//设置顶部视图
     [folderBtn addTarget:self action:@selector(folderBtnClickAction:) forControlEvents:UIControlEventTouchUpInside];
     _folderBtn=folderBtn;
+    
+    UIBarButtonItem *menu=[Tool barButtomItemWithTitle:nil imgName:@"menu" target:self action:@selector(sideMenuClickAction)];
+    self.navigationItem.rightBarButtonItems=@[menu,addItem];
+    
 }
+#pragma mark -打开侧边菜单
+-(void)sideMenuClickAction{
+    
+    [SideMenu show];
+}
+
 -(void)addBtnClickAction{
     
+    [SideMenu show];
+    return;
     kWeakSelf(wkself)
     EditViewController *edit=[[EditViewController alloc] init];
     NSString *folderName=[[NSUserDefaults standardUserDefaults] objectForKey:kCurrentFolderName];
@@ -545,10 +558,6 @@
         HUDError(error.localizedDescription)
     }
     [controller dismissViewControllerAnimated:YES completion:nil];
-}
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    
-    [self.view.window endEditing:YES];
 }
 
 @end

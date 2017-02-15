@@ -9,14 +9,7 @@
 #ifndef DefineHeader_h
 #define DefineHeader_h
 
-#define kStrongProperty(class,name) @property(nonatomic,strong)class *name;
-#define kStringProperty(name) @property(nonatomic,copy)NSString *name;
-#define kAssignProperty(type,name) @property(nonatomic,assign)type name;
-#define kCopyProperty(class,name) @property(nonatomic,copy)class *name;
 
-#define HudShow(string)                 [ProgressHUD showError:string];
-#define UserDefault                     [NSUserDefaults standardUserDefaults]
-#define Localizable(x)                  NSLocalizedString(x,nil)
 
 #define LoginState                      @"login_state_key"
 #define kLuanchedPassword               @"kLuanchPassword"
@@ -29,4 +22,5 @@
 #define kPwd                            @"pwd"
 #define kUerdidLoginNotifaction         @"kUerdidLoginNotifaction"
 #define kUserdidLoginoutNotfifaction    @"kUserdidLoginoutNotfifaction"
+#define kCurrentFolderName              @"currentFolderName"
 #endif /* DefineHeader_h */

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		855219531E4F5B5900DD5550 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 855219521E4F5B5900DD5550 /* menu.png */; };
+		855219561E504EBF00DD5550 /* SideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 855219551E504EBF00DD5550 /* SideMenu.m */; };
 		85DB81A71E4DFB680015A93D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DB81A61E4DFB680015A93D /* main.m */; };
 		85DB81B01E4DFB680015A93D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85DB81AE1E4DFB680015A93D /* Main.storyboard */; };
 		85DB81B21E4DFB680015A93D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85DB81B11E4DFB680015A93D /* Assets.xcassets */; };
@@ -137,6 +139,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		855219521E4F5B5900DD5550 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
+		855219541E504EBF00DD5550 /* SideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenu.h; sourceTree = "<group>"; };
+		855219551E504EBF00DD5550 /* SideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenu.m; sourceTree = "<group>"; };
 		85DB81A21E4DFB680015A93D /* PrivateNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrivateNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DB81A61E4DFB680015A93D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		85DB81AF1E4DFB680015A93D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -504,6 +509,8 @@
 		85DB81DB1E4DFC510015A93D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				855219541E504EBF00DD5550 /* SideMenu.h */,
+				855219551E504EBF00DD5550 /* SideMenu.m */,
 				85DB81DC1E4DFC510015A93D /* FolderTableView.h */,
 				85DB81DD1E4DFC510015A93D /* FolderTableView.m */,
 				85DB81DE1E4DFC510015A93D /* ListCell.h */,
@@ -619,6 +626,7 @@
 		85DB820F1E4DFC510015A93D /* list */ = {
 			isa = PBXGroup;
 			children = (
+				855219521E4F5B5900DD5550 /* menu.png */,
 				85DB82101E4DFC510015A93D /* allNotes.png */,
 				85DB82111E4DFC510015A93D /* arrow_down@2x.png */,
 				85DB82121E4DFC510015A93D /* arrow_down@3x.png */,
@@ -990,6 +998,7 @@
 				85DB82DF1E4DFC510015A93D /* tab2@3x.png in Resources */,
 				85DB82D91E4DFC510015A93D /* share_weixin@3x.png in Resources */,
 				85DB82CE1E4DFC510015A93D /* nav_search@2x.png in Resources */,
+				855219531E4F5B5900DD5550 /* menu.png in Resources */,
 				85DB82D01E4DFC510015A93D /* head@2x.png in Resources */,
 				85DB82C91E4DFC510015A93D /* top_no@3x.png in Resources */,
 				85DB82BF1E4DFC510015A93D /* keyboard@2x.png in Resources */,
@@ -1010,6 +1019,7 @@
 				85DB82A91E4DFC510015A93D /* Note.m in Sources */,
 				85DB82F81E4DFC510015A93D /* NSData+ImageContentType.m in Sources */,
 				85DB82A41E4DFC510015A93D /* EditViewController.m in Sources */,
+				855219561E504EBF00DD5550 /* SideMenu.m in Sources */,
 				85DB82EB1E4DFC510015A93D /* MASCompositeConstraint.m in Sources */,
 				85DB82FA1E4DFC510015A93D /* SDImageCache.m in Sources */,
 				85DB82ED1E4DFC510015A93D /* MASConstraintMaker.m in Sources */,
