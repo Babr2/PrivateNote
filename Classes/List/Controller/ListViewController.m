@@ -174,6 +174,7 @@
     self.navigationItem.rightBarButtonItems=@[menu,addItem];
     
 }
+
 #pragma mark -打开侧边菜单
 -(void)sideMenuClickAction{
     
