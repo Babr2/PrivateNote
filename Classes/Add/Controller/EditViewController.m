@@ -251,8 +251,6 @@
     }
     if (_isChanged==NO) {
         
-        [UserDefault setInteger:0 forKey:@"seletedIndex"];
-        [UserDefault synchronize];
         [self.navigationController popViewControllerAnimated:YES];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
@@ -260,8 +258,7 @@
         UIAlertController *alert=[Tool AlertWithTitle:@"提示" msg:@"是否放弃编辑" style:UIAlertControllerStyleAlert leftActionTitle:@"放弃" leftActionStyle:UIAlertActionStyleCancel leftAction:^(UIAlertAction *backAction) {
         
             [alert dismissViewControllerAnimated:YES completion:nil];
-            [UserDefault setInteger:0 forKey:@"seletedIndex"];
-            [UserDefault synchronize];
+        
             [wkself.navigationController popViewControllerAnimated:YES];
             [wkself.navigationController dismissViewControllerAnimated:YES completion:nil];
             
@@ -269,9 +266,6 @@
         
             [wkself storageArticleAction];
             [alert dismissViewControllerAnimated:YES completion:nil];
-            
-            [UserDefault setInteger:0 forKey:@"seletedIndex"];
-            [UserDefault synchronize];
             
             [wkself.navigationController popViewControllerAnimated:YES];
             [wkself.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -337,8 +331,8 @@
         
         self.doneActionCallBack();
     }
+
     [self.navigationController popViewControllerAnimated:YES];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)pickMediaAction{
     

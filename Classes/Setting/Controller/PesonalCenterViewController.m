@@ -39,7 +39,7 @@ kStringProperty(imageURL)
     _tbView.dataSource=self;
     
     UIView *headView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 150)];
-    UIImageView *headIMageView=[[UIImageView alloc] initWithFrame:CGRectMake(120, 25, 80, 80)];
+    UIImageView *headIMageView=[[UIImageView alloc] initWithFrame:CGRectZero];
     headIMageView.clipsToBounds=YES;
     headIMageView.userInteractionEnabled=YES;
     headIMageView.layer.cornerRadius=40;
@@ -51,30 +51,58 @@ kStringProperty(imageURL)
     [headIMageView addGestureRecognizer:tap];
     _headImageView=headIMageView;
     [headView addSubview:headIMageView];
+    [_headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@80);
+        make.left.equalTo(headView).offset((kWidth-80)/2);
+        make.top.equalTo(headView).offset(25);
+    }];
     
-    UILabel *nameLab=[[UILabel alloc] initWithFrame:CGRectMake(120,125,80, 20)];
+    UILabel *nameLab=[[UILabel alloc] initWithFrame:CGRectZero  ];
     nameLab.text=[UserDefault objectForKey:kNickName];
     nameLab.font=kFont(12);
     nameLab.textAlignment=NSTextAlignmentCenter;
     nameLab.textColor=kblue;
     _nameLab=nameLab;
     [headView addSubview:nameLab];
+    [nameLab makeConstraints:^(MASConstraintMaker *make) {
+       
+        make.width.equalTo(@80);
+        make.height.equalTo(@20);
+        make.left.equalTo(headView).offset((kWidth-80)/2);
+        make.top.equalTo(headIMageView.mas_bottom).offset(20);
+    }];
     
     UIView *footView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,kHeight-300)];
-    UILabel *timeLab=[[UILabel alloc] initWithFrame:CGRectMake(80, 0, 160, 20)];
-    NSString *lastSyncTime=[UserDefault objectForKey:kLastSyncTime];
+    UILabel *timeLab=[[UILabel alloc] initWithFrame:CGRectZero];
+    NSString *GMT=[UserDefault objectForKey:kLastSyncTime];
+    NSString *lastSyncTime=[Tool dateWithIntervalSince1970:GMT.integerValue];
     timeLab.text=[NSString stringWithFormat:@"上次同步：%@",lastSyncTime];
     timeLab.font=kFont(10);
     timeLab.textAlignment=NSTextAlignmentCenter;
     _timeLab=timeLab;
-    UIButton *backBtn=[[UIButton alloc] initWithFrame:CGRectMake(30, 70, 260, 40)];
+    [footView addSubview:timeLab];
+    [timeLab makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.width.equalTo(@160);
+        make.height.equalTo(@20);
+        make.left.equalTo(footView).offset((kWidth-160)/2);
+        make.top.equalTo(footView).offset(5);
+    }];
+    
+    UIButton *backBtn=[[UIButton alloc] initWithFrame:CGRectZero];
     backBtn.backgroundColor=kRed;
     backBtn.titleLabel.font=kFont(14);
     [backBtn setTitle:@"退出登录" forState:UIControlStateNormal];
     [backBtn addTarget:self action:@selector(quitLoginClickAction:) forControlEvents:UIControlEventTouchUpInside];
     backBtn.layer.cornerRadius=5;
-    [footView addSubview:timeLab];
     [footView addSubview: backBtn];
+    [backBtn makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.width.equalTo(@260);
+        make.height.equalTo(@40);
+        make.left.equalTo(footView).offset((kWidth-260)/2);
+        make.top.equalTo(timeLab.mas_bottom).offset(40);
+    }];
     
     _tbView.tableFooterView=footView;
     _tbView.tableHeaderView=headView;
@@ -83,6 +111,7 @@ kStringProperty(imageURL)
 -(void)backAcion{
     
     [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController dismissViewControllerAnimated:NO completion:nil];
 }
 -(void)quitLoginClickAction:(UIButton *)sender{
     
@@ -92,6 +121,7 @@ kStringProperty(imageURL)
     [UserDefault removeObjectForKey:kNickName];
     [UserDefault removeObjectForKey:kHeadimageURL];
     [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController dismissViewControllerAnimated:NO completion:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUserdidLoginoutNotfifaction object:nil];
 }
 -(void)addHeadImageAction{

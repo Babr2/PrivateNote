@@ -14,8 +14,9 @@
 #import "WCLPassWordView.h"
 #import "LoginViewController.h"
 #import "User.h"
+#import <MessageUI/MessageUI.h>
 
-@interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate>
 
 @property(nonatomic,strong) NSArray     *dataArray;
 @property(nonatomic,strong) UITableView *tbView;
@@ -25,6 +26,13 @@
 @end
 
 @implementation SettingViewController
+
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    [UserDefault setInteger:2 forKey:@"seletedIndex"];
+    [UserDefault synchronize];
+}
 
 - (void)viewDidLoad {
     
@@ -45,7 +53,7 @@
     UIButton *btn=[[UIButton alloc] initWithFrame:CGRectMake(20, 20, 40, 40)];
     [btn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithCustomView:btn];
     
     _editSwitch=[UISwitch new];
     _passWordSwitch=[UISwitch new];
@@ -60,7 +68,7 @@
     
     [UserDefault setInteger:0 forKey:@"seletedIndex"];
     [UserDefault synchronize];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)userDidLogin{
     
@@ -224,8 +232,30 @@
         self.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:controller animated:YES];
         self.hidesBottomBarWhenPushed=NO;
+    }else if(indexPath.section==2){
+        
+        MFMailComposeViewController*mail=[[MFMailComposeViewController alloc]init];
+        mail.mailComposeDelegate=self;
+        [mail setSubject:Localizable(@"问题反馈")];
+        [mail setCcRecipients:@[@"332985289@qq.com"]];
+        if(mail){
+            
+            [self presentViewController:mail animated:YES completion:nil];
+        }
     }
+}
+#pragma MFMailComposeViewControllerDelegate
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
     
+    if (result==MFMailComposeResultSent) {
+        
+        HUDSuccess(@"发送成功")
+    }
+    else if(result==MFMailComposeResultFailed){
+        
+        HUDError(error.localizedDescription)
+    }
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)dealloc{
     

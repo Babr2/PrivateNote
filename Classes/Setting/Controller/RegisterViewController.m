@@ -79,19 +79,33 @@ kStrongProperty(UIButton, loginBtn)
             _pwdField=textField;
         }
     };
-    
+    kWeakSelf(wkself)
     _phoneField.placeholder=Localizable(@"手机号");
     _phoneField.keyboardType=UIKeyboardTypeNumberPad;
     _verifyField.placeholder=Localizable(@"验证码");
     _pwdField.placeholder=Localizable(@"密码");
     
-    _registerBtn=[Tool makeBtnFrame:CGRectMake(30, CGRectGetMaxY(backView.frame)+20, 260, 40) title:Localizable(@"注册")textColor:kWhite imageName:nil backgroundColor:kblue target:self action:@selector(registerClickAction:)];
+    _registerBtn=[Tool makeBtnFrame:CGRectZero
+                              title:Localizable(@"注册")textColor:kWhite imageName:nil backgroundColor:kblue target:self action:@selector(registerClickAction:)];
     _registerBtn.layer.cornerRadius=5;
     [self.view addSubview:_registerBtn];
-    
+    [_registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+
+        make.width.equalTo(@260);
+        make.height.equalTo(@40);
+        make.left.equalTo(wkself.view).offset((kWidth-260)/2);
+        make.top.equalTo(backView.mas_bottom).offset(20);
+    }];
     _loginBtn=[Tool makeBtnFrame:CGRectMake(110, CGRectGetMaxY(_registerBtn.frame)+10, 100, 20) title:Localizable(@"或者，登录账户") textColor:kgray imageName:nil backgroundColor:nil target:self action:@selector(backToLoginClickAction)];
     _loginBtn.titleLabel.font=kFont(12);
     [self.view addSubview:_loginBtn];
+    [_loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.width.equalTo(@100);
+        make.height.equalTo(@20);
+        make.left.equalTo(wkself.view).offset((kWidth-100)/2);
+        make.top.equalTo(wkself.registerBtn.mas_bottom).offset(10);
+    }];
 }
 //获取验证码的方法
 -(void)getVerifyClickAction:(UIButton *)sender{

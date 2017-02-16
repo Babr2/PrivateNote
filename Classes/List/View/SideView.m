@@ -13,15 +13,18 @@
 #import "ListViewController.h"
 #import "EditViewController.h"
 #import "SettingViewController.h"
+#import "LoginViewController.h"
 
 @interface SideView()<UITableViewDelegate,UITableViewDataSource>
 
-@property(nonatomic,strong)UITableView  *tbView;
-@property(nonatomic,strong)NSArray      *dataArray;
+@property(nonatomic,strong)UITableView                      *tbView;
+@property(nonatomic,strong)NSArray                              *dataArray;
 
-@property(nonatomic,strong)UINavigationController *addNavi;
-@property(nonatomic,strong)UINavigationController *settingNavi;
-
+@property(nonatomic,strong)UINavigationController   *addNavi;
+@property(nonatomic,strong)UINavigationController   *settingNavi;
+@property(nonatomic,strong)UIButton                         *signOutBtn;
+@property(nonatomic,strong)UILabel                          *nickNameLb;
+@property(nonatomic,strong)UIImageView                  *headImageView;
 @end
 
 @implementation SideView
@@ -32,14 +35,16 @@
         
         [self setup];
         [self createUI];
+        [self refreshUI];
     }
     return self;
 }
 -(void)setup{
     
     _dataArray=@[@"日记列表",@"写日记",@"设置"];
-    _addNavi=[[UINavigationController alloc] initWithRootViewController:[EditViewController new]];
     _settingNavi=[[UINavigationController alloc] initWithRootViewController:[SettingViewController new]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI) name:kUerdidLoginNotifaction object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI) name:kUserdidLoginoutNotfifaction object:nil];
 }
 -(void)createUI{
     
@@ -55,10 +60,54 @@
     _tbView.tableHeaderView=[self createTableHeaderView];
     _tbView.tableFooterView=[self createTableFooterView];
 }
+-(void)refreshUI{
+    
+    NSString *token=[UserDefault objectForKey:kAccessToken];
+    if (!token||token.length==0 ) {
+        
+        _headImageView.image=nil;
+        _nickNameLb.text=nil;
+        _signOutBtn.hidden=YES;
+        
+    }else{
+        
+        NSString *imageURLString=[UserDefault objectForKey:kHeadimageURL];
+        NSURL *url=[NSURL URLWithString:imageURLString];
+        [_headImageView sd_setImageWithURL:url];
+        _nickNameLb.text=[[UserDefault objectForKey:kNickName] copy];
+        _signOutBtn.hidden=NO;
+    }
+}
 -(UIView *)createTableHeaderView{
     
     UIView *header=[[UIView alloc] initWithFrame:CGRectMake(0, 0, kSideWidth, 120)];
+    CGFloat width=kSideWidth/3;
+    UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectZero];
+    [header addSubview:imageView];
+    imageView.backgroundColor=kLightGray;
+    imageView.clipsToBounds=YES;
+    imageView.layer.cornerRadius=width/2;
+    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.width.height.equalTo(@(width));
+        make.left.equalTo(header).offset(width);
+        make.top.equalTo(header).offset(25);
+    }];
+    _headImageView=imageView;
     
+    UILabel *nickLab=[[UILabel alloc] initWithFrame:CGRectZero];
+    [header addSubview:nickLab];
+    nickLab.textColor=kblue;
+    
+    nickLab.font=kFont(12);
+    nickLab.textAlignment=NSTextAlignmentCenter;
+   [nickLab makeConstraints:^(MASConstraintMaker *make) {
+       
+       make.left.right.equalTo(imageView);
+       make.top.equalTo(imageView.mas_bottom);
+       make.bottom.equalTo(header.mas_bottom).offset(-2);
+   }];
+    _nickNameLb=nickLab;
     
     UIView *line=[[UIView alloc] initWithFrame:CGRectZero];
     line.backgroundColor=[UIColor colorWithWhite:0.2 alpha:1];
@@ -69,7 +118,6 @@
         make.bottom.equalTo(header);
         make.height.equalTo(@1);
     }];
-    
     return header;
 }
 -(UIView *)createTableFooterView{
@@ -85,9 +133,29 @@
         make.top.equalTo(footer);
         make.height.equalTo(@1);
     }];
-    
-    
+    UIButton *signOutBtn=[Tool makeBtnFrame:CGRectZero title:Localizable(@"退出登录") textColor:kBlack imageName:nil backgroundColor:kWhite target:self action:@selector(signOutClickAction:)];
+    [self addSubview:signOutBtn];
+    _signOutBtn=signOutBtn;
+    CGFloat width=kSideWidth/3;
+    kWeakSelf(wkself)
+    [signOutBtn makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.width.equalTo(@(2*width));
+        make.height.equalTo(@(width/2));
+        make.left.equalTo(wkself).offset(width/2);
+        make.bottom.equalTo(wkself).offset(-30);
+    }];
     return footer;
+}
+-(void)signOutClickAction:(UIButton *)sender{
+    
+    sender.enabled=NO;
+    [UserDefault removeObjectForKey:kAccessToken];
+    [UserDefault removeObjectForKey:kLastSyncTime];
+    [UserDefault removeObjectForKey:kNickName];
+    [UserDefault removeObjectForKey:kHeadimageURL];
+    [self createUI];
+    [_signOutBtn removeFromSuperview];
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
@@ -108,43 +176,34 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UINavigationController  *navi=(UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     NSInteger seletedIndex=[UserDefault integerForKey:@"seletedIndex"];
     if(indexPath.row==0){
         
-        if(seletedIndex==1){
-            
-            [_addNavi dismissViewControllerAnimated:YES completion:nil];
-            
-        }else if(seletedIndex==2){
-            
-            [_settingNavi dismissViewControllerAnimated:YES completion:nil];
-        }
+        [navi popToRootViewControllerAnimated:YES];
         
     }else if(indexPath.row==1){
         
-        if(seletedIndex==0){
+        if(seletedIndex!=indexPath.row){
             
-            [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:_addNavi animated:YES completion:nil];
-            
-        }else if(seletedIndex==2){
-            
-            [_settingNavi dismissViewControllerAnimated:NO completion:nil];
-            [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:_addNavi animated:YES completion:nil];
+            EditViewController *edit=[EditViewController new];
+            edit.doneActionCallBack=^{
+              
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTbView" object:nil];
+            };
+            [navi pushViewController:edit animated:YES];
         }
         
     }else{
         
-        if(seletedIndex==0){
+        if(seletedIndex!=indexPath.row){
             
-            [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:_settingNavi animated:YES completion:nil];
-            
-        }else if(seletedIndex==1){
-            
-            [_addNavi dismissViewControllerAnimated:NO completion:nil];
-            [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:_settingNavi animated:YES completion:nil];
+            SettingViewController *setting=[SettingViewController new];
+            [navi pushViewController:setting animated:YES];
         }
     }
     [SideMenu show];
+    //记录按下侧边栏某个选项后的ListViewController选项
     [UserDefault setInteger:indexPath.row forKey:@"seletedIndex"];
     [UserDefault synchronize];
 }

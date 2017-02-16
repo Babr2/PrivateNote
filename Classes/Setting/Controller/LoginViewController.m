@@ -40,7 +40,10 @@ kStrongProperty(UIButton,    forgetBtn)
 }
 -(void)backAcion{
     
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController dismissViewControllerAnimated:NO completion:nil];
+    [UserDefault setInteger:0 forKey:@"seletedIndex"];
+    [UserDefault synchronize];
 }
 -(void)createUI{
     
@@ -55,28 +58,44 @@ kStrongProperty(UIButton,    forgetBtn)
         if (i==0) {
             _userField=tf;
         }else{
+            tf.secureTextEntry=YES;//密文
             _pswField=tf;
         }
         UIView *line=[[UIView alloc] initWithFrame:CGRectMake(0,40+40.5*i, kWidth, 1)];
         line.backgroundColor=kLightGray;
         [backView addSubview:line];
     }
-    _forgetBtn=[[UIButton alloc] initWithFrame:CGRectMake(255,40.5, 60,40)];
+    _forgetBtn=[[UIButton alloc] initWithFrame:CGRectZero];
     [_forgetBtn addTarget:self action:@selector(forgetPassword) forControlEvents:UIControlEventTouchUpInside];
     [_forgetBtn setTitle:Localizable(@"忘记密码") forState:0];
     _forgetBtn.titleLabel.font=kFont(13);
     [_forgetBtn setTitleColor:kgray forState:UIControlStateNormal];
     [backView addSubview:_forgetBtn];
+    kWeakSelf(wkself)
+    [_forgetBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+       
+        make.right.equalTo(wkself.pswField).offset(-20);
+        make.top.bottom.equalTo(wkself.pswField);
+        make.width.equalTo(@60);
+    }];
+    
     
     _userField.placeholder=Localizable(@"手机号");
     _userField.text=[UserDefault objectForKey:KUserLoginName];
     _pswField.placeholder=Localizable(@"密码");
     
-    _loginBtn=[Tool makeBtnFrame:CGRectMake(30, CGRectGetMaxY(backView.frame)+20, 260, 40) title:Localizable(@"登录") textColor:kWhite imageName:nil backgroundColor:kblue target:self action:@selector(loginClickAction:)];
+    _loginBtn=[Tool makeBtnFrame:CGRectZero title:Localizable(@"登录") textColor:kWhite imageName:nil backgroundColor:kblue target:self action:@selector(loginClickAction:)];
     _loginBtn.layer.cornerRadius=5;
     [self.view addSubview:_loginBtn];
+    [_loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@260);
+        make.height.equalTo(@40);
+        make.left.equalTo(wkself.view).offset((kWidth-260)/2);
+        make.top.equalTo(backView.mas_bottom).offset(20);
+    }];
     
-    _registerBtn=[Tool makeBtnFrame:CGRectMake(110, CGRectGetMaxY(_loginBtn.frame)+10, 100, 20) title:Localizable(@"或者，创建账户")
+    
+    _registerBtn=[Tool makeBtnFrame:CGRectZero title:Localizable(@"或者，创建账户")
                           textColor:kgray
                           imageName:nil
                     backgroundColor:nil
@@ -84,6 +103,13 @@ kStrongProperty(UIButton,    forgetBtn)
                              action:@selector(registerClickAction)];
     _registerBtn.titleLabel.font=kFont(12);
     [self.view addSubview:_registerBtn];
+    [_registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.width.equalTo(@100);
+        make.height.equalTo(@20);
+        make.left.equalTo(wkself.view).offset((kWidth-100)/2);
+        make.top.equalTo(wkself.loginBtn.mas_bottom).offset(10);
+    }];
     
     _userField.text=[UserDefault objectForKey:KTel];
 }

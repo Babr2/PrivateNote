@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "SideMenu.h"
 
 @interface BaseViewController ()
 
@@ -24,9 +25,16 @@
     self.view.backgroundColor=[UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets=NO;
     
-    
+    self.navigationItem.leftBarButtonItem=[Tool barButtomItemWithTitle:nil
+                                                               imgName:@"menu"
+                                                                target:self
+                                                                action:@selector(sideMenuClickAction)];
 }
 
 
-
+#pragma mark -打开侧边菜单
+-(void)sideMenuClickAction{
+    
+    [SideMenu show];
+}
 @end

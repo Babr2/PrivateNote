@@ -72,6 +72,13 @@ kAssignProperty(int, sumTime)
     _nextBtn=[Maker makeBtnFrame:CGRectMake(30, CGRectGetMaxY(backView.frame)+20, 260, 40) title:Localizable(@"下一步") textColor:kWhite backgroundColor:kblue font:kFont(15) target:self action:@selector(nextTepClickAction:)];
     _nextBtn.layer.cornerRadius=5;
     [self.view addSubview:_nextBtn];
+    kWeakSelf(wkself)
+    [_nextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@260);
+        make.height.equalTo(@40);
+        make.left.equalTo(wkself.view).offset((kWidth-260)/2);
+        make.top.equalTo(backView.mas_bottom).offset(20);
+    }];
     _telField.text=[UserDefault objectForKey:KTel];
 }
 -(void)sendVerifyCodeClickAction:(UIButton *)sender{

@@ -26,6 +26,13 @@
 
 @implementation ListViewController
 
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    [UserDefault setInteger:0 forKey:@"seletedIndex"];
+    [UserDefault synchronize];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
@@ -143,16 +150,14 @@
     [alert addAction:confirm];
     [self presentViewController:alert animated:YES completion:nil];
 }
+#pragma  mark -添加导航栏按钮
 -(void)creteBarButtonItem{
     
-    self.navigationItem.leftBarButtonItem=[Tool barButtomItemWithTitle:nil
+     
+    self.navigationItem.rightBarButtonItem=[Tool barButtomItemWithTitle:nil
                                                                imgName:@"nav_search"
                                                                 target:self
                                                                 action:@selector(searchBtnClickAction)];
-    UIBarButtonItem *addItem=[Tool barButtomItemWithTitle:nil
-                                                                imgName:@"daohanglan-edit"
-                                                                 target:self
-                                                                 action:@selector(addBtnClickAction)];
     UIView *topView=[[UIView alloc] initWithFrame:CGRectMake(0,0 ,84,40)];
     UIImageView *arrowDownImv=[[UIImageView alloc] initWithFrame:CGRectMake(0, 15, 13, 7.5)];
     arrowDownImv.image=[UIImage imageNamed:@"arrow_down"];
@@ -169,17 +174,9 @@
     [self.navigationItem setTitleView:topView];//设置顶部视图
     [folderBtn addTarget:self action:@selector(folderBtnClickAction:) forControlEvents:UIControlEventTouchUpInside];
     _folderBtn=folderBtn;
-    
-    UIBarButtonItem *menu=[Tool barButtomItemWithTitle:nil imgName:@"menu" target:self action:@selector(sideMenuClickAction)];
-    self.navigationItem.rightBarButtonItems=@[menu,addItem];
-    
 }
 
-#pragma mark -打开侧边菜单
--(void)sideMenuClickAction{
-    
-    [SideMenu show];
-}
+
 
 -(void)addBtnClickAction{
     
@@ -241,8 +238,7 @@
     _tbView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     [self.view addSubview:_tbView];
     [_tbView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(wkself.view);
-        make.bottom.equalTo(wkself.view).offset(-44);
+        make.left.right.bottom.equalTo(wkself.view);
         make.top.equalTo(@64);
     }];
     _tbView.backgroundColor=[UIColor colorWithWhite:0.96 alpha:1.0];
