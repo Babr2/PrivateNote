@@ -245,6 +245,7 @@
     _tbView.tableFooterView=[UIView new];
     _tbView.delegate=self;
     _tbView.dataSource=self;
+    
 }
 
 #pragma  mark -表视图代理方法

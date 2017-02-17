@@ -15,6 +15,8 @@
 #import "LoginViewController.h"
 #import "User.h"
 #import <MessageUI/MessageUI.h>
+#import <ShareSDKUI/ShareSDKUI.h>
+#import <ShareSDKUI/ShareSDK+SSUI.h>
 
 @interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate>
 
@@ -232,17 +234,87 @@
         self.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:controller animated:YES];
         self.hidesBottomBarWhenPushed=NO;
+        
     }else if(indexPath.section==2){
         
-        MFMailComposeViewController*mail=[[MFMailComposeViewController alloc]init];
-        mail.mailComposeDelegate=self;
-        [mail setSubject:Localizable(@"问题反馈")];
-        [mail setCcRecipients:@[@"332985289@qq.com"]];
-        if(mail){
+        if (indexPath.row==0) {
             
-            [self presentViewController:mail animated:YES completion:nil];
+            MFMailComposeViewController*mail=[[MFMailComposeViewController alloc]init];
+            mail.mailComposeDelegate=self;
+            [mail setSubject:Localizable(@"问题反馈")];
+            [mail setCcRecipients:@[@"332985289@qq.com"]];
+            if(mail){
+                [self presentViewController:mail animated:YES completion:nil];
+            }
+            
+        }else{
+            
+            [self shareAction];
         }
     }
+}
+//分享平台种类
++(SSDKPlatformType)shareTypeWithName:(NSString *)title{
+    
+    SSDKPlatformType type=SSDKPlatformTypeUnknown;
+    if([title isEqualToString:@"微博"]){
+        
+        type=SSDKPlatformTypeSinaWeibo;
+        
+    }else if([title isEqualToString:@"微信"]){
+        
+        type=SSDKPlatformTypeWechat;
+        
+    }else if([title isEqualToString:@"朋友圈"]){
+        
+        type=SSDKPlatformSubTypeWechatTimeline;
+        
+    }else if([title isEqualToString:@"QQ"]){
+        
+        type=SSDKPlatformTypeQQ;
+        
+    }else{
+        
+        type=SSDKPlatformSubTypeQZone;
+    }
+    return type;
+}
+-(void)shareAction{
+    
+    __weak typeof(self) wkself=self;
+    UIAlertController *controller=[Tool sheetWithTitle:@"分享至"
+                  action:^(UIAlertAction * action) {
+                      
+                      NSString *title=[action.title copy];
+                      //分享到哪个平台
+                      SSDKPlatformType type=[SettingViewController shareTypeWithName:title];
+                      [wkself shareTo:type];
+                      
+                  } titleArray:@[@"微博",@"微信",@"朋友圈",@"QQ",@"QQ空间"]];
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+-(void)shareTo:(SSDKPlatformType)type{
+    
+    NSMutableDictionary *dict=[NSMutableDictionary dictionary];
+    UIImage *shareImage=[UIImage imageNamed:@"share_icon"];
+    [dict SSDKSetupShareParamsByText:@"私密记，最安全的云日记"
+                              images:@[shareImage]
+                                 url:[NSURL URLWithString:@"http://cgpointzero.top"]
+                               title:@"私密记"
+                                type:SSDKContentTypeAuto];
+    [ShareSDK share:type
+         parameters:dict
+     onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+        
+         if(state==SSDKResponseStateSuccess){
+             
+             HUDSuccess(@"分享成功")
+         }else{
+             
+             HUDSuccess(@"分享失败")
+         }
+     }];
 }
 #pragma MFMailComposeViewControllerDelegate
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{

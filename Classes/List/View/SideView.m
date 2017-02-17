@@ -42,6 +42,7 @@
 -(void)setup{
     
     _dataArray=@[@"日记列表",@"写日记",@"设置"];
+    self.backgroundColor=[UIColor whiteColor];
     _settingNavi=[[UINavigationController alloc] initWithRootViewController:[SettingViewController new]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI) name:kUerdidLoginNotifaction object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI) name:kUserdidLoginoutNotfifaction object:nil];
@@ -55,10 +56,28 @@
     __weak typeof(self) wkself=self;
     [_tbView mas_makeConstraints:^(MASConstraintMaker *make) {
        
-        make.edges.equalTo(wkself);
+        make.edges.equalTo(wkself).insets(UIEdgeInsetsMake(0, 0, 60, 0));
     }];
     _tbView.tableHeaderView=[self createTableHeaderView];
     _tbView.tableFooterView=[self createTableFooterView];
+    UIButton *signOutBtn=[Tool makeBtnFrame:CGRectZero
+                                      title:Localizable(@"退出登录")
+                                  textColor:kWhite
+                                  imageName:nil
+                            backgroundColor:kWhite
+                                     target:self
+                                     action:@selector(signOutClickAction:)];
+    signOutBtn.backgroundColor=[UIColor redColor];
+    signOutBtn.layer.cornerRadius=4;
+    [self addSubview:signOutBtn];
+    _signOutBtn=signOutBtn;
+    [signOutBtn makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.left.equalTo(wkself).offset(20);
+        make.right.equalTo(wkself).offset(-20);
+        make.bottom.equalTo(wkself).offset(-10);
+        make.height.equalTo(@40);
+    }];
 }
 -(void)refreshUI{
     
@@ -80,17 +99,16 @@
 }
 -(UIView *)createTableHeaderView{
     
-    UIView *header=[[UIView alloc] initWithFrame:CGRectMake(0, 0, kSideWidth, 120)];
-    CGFloat width=kSideWidth/3;
+    UIView *header=[[UIView alloc] initWithFrame:CGRectMake(0, 0, kSideWidth, 140)];
     UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectZero];
     [header addSubview:imageView];
     imageView.backgroundColor=kLightGray;
     imageView.clipsToBounds=YES;
-    imageView.layer.cornerRadius=width/2;
+    imageView.layer.cornerRadius=40;// 这种是低效率的圆角实现，高效率实现圆形图片
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.width.height.equalTo(@(width));
-        make.left.equalTo(header).offset(width);
+        make.width.height.equalTo(@(80));
+        make.centerX.equalTo(header);
         make.top.equalTo(header).offset(25);
     }];
     _headImageView=imageView;
@@ -99,13 +117,14 @@
     [header addSubview:nickLab];
     nickLab.textColor=kblue;
     
-    nickLab.font=kFont(12);
+    nickLab.font=kFont(14);
     nickLab.textAlignment=NSTextAlignmentCenter;
    [nickLab makeConstraints:^(MASConstraintMaker *make) {
        
-       make.left.right.equalTo(imageView);
-       make.top.equalTo(imageView.mas_bottom);
-       make.bottom.equalTo(header.mas_bottom).offset(-2);
+       make.left.equalTo(header).offset(10);
+       make.right.equalTo(header).offset(-10);
+       make.top.equalTo(imageView.mas_bottom).offset(5);
+       make.height.equalTo(@15);
    }];
     _nickNameLb=nickLab;
     
@@ -133,18 +152,6 @@
         make.top.equalTo(footer);
         make.height.equalTo(@1);
     }];
-    UIButton *signOutBtn=[Tool makeBtnFrame:CGRectZero title:Localizable(@"退出登录") textColor:kBlack imageName:nil backgroundColor:kWhite target:self action:@selector(signOutClickAction:)];
-    [self addSubview:signOutBtn];
-    _signOutBtn=signOutBtn;
-    CGFloat width=kSideWidth/3;
-    kWeakSelf(wkself)
-    [signOutBtn makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.width.equalTo(@(2*width));
-        make.height.equalTo(@(width/2));
-        make.left.equalTo(wkself).offset(width/2);
-        make.bottom.equalTo(wkself).offset(-30);
-    }];
     return footer;
 }
 -(void)signOutClickAction:(UIButton *)sender{
@@ -154,8 +161,7 @@
     [UserDefault removeObjectForKey:kLastSyncTime];
     [UserDefault removeObjectForKey:kNickName];
     [UserDefault removeObjectForKey:kHeadimageURL];
-    [self createUI];
-    [_signOutBtn removeFromSuperview];
+    [self refreshUI];
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
