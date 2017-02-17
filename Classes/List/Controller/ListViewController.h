@@ -11,8 +11,5 @@
 @interface ListViewController : BaseViewController
 
 
-@property(nonatomic,strong)UITableView          *tbView;
-@property(nonatomic,strong)NSMutableArray       *dataArray;
-@property(nonatomic,copy) void(^didSelectCallBack)();
-@property(nonatomic,strong)UIButton             *folderBtn;
+
 @end

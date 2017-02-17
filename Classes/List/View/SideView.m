@@ -9,7 +9,7 @@
 //
 
 #import "SideView.h"
-#import "SideMenu.h"
+#import "AppDelegate.h"
 #import "ListViewController.h"
 #import "EditViewController.h"
 #import "SettingViewController.h"
@@ -208,7 +208,8 @@
             [navi pushViewController:setting animated:YES];
         }
     }
-    [SideMenu show];
+    AppDelegate *app=(AppDelegate *)[UIApplication sharedApplication].delegate;
+    [app hideMenu];
     //记录按下侧边栏某个选项后的ListViewController选项
     [UserDefault setInteger:indexPath.row forKey:@"seletedIndex"];
     [UserDefault synchronize];

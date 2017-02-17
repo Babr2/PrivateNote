@@ -28,6 +28,7 @@
 #define kblue                       [UIColor colorWithRed:32/255.0 green:140/255.0 blue:255/255.0 alpha:1.0]
 #define kRed                        [UIColor redColor]
 #define kLightGray                  [UIColor lightGrayColor]
+#define kSideWidth                  (kWidth*2/3)
 
 #define kStrongProperty(class,name) @property(nonatomic,strong)class *name;
 #define kStringProperty(name)       @property(nonatomic,copy)NSString *name;

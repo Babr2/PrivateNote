@@ -7,7 +7,7 @@
 //
 
 #import "BaseViewController.h"
-#import "SideMenu.h"
+#import "AppDelegate.h"
 
 @interface BaseViewController ()
 
@@ -35,6 +35,7 @@
 #pragma mark -打开侧边菜单
 -(void)sideMenuClickAction{
     
-    [SideMenu show];
+    AppDelegate *app=(AppDelegate *)[UIApplication sharedApplication].delegate;
+    [app showMenu];
 }
 @end

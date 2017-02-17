@@ -13,7 +13,6 @@
 #import "SearchController.h"
 #import "ZHTextView.h"
 #import <MessageUI/MessageUI.h>
-#import "SideMenu.h"
 
 @interface ListViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate>
 
@@ -21,6 +20,9 @@
 @property(nonatomic,strong)FolderTableView      *folderTableView;
 @property(nonatomic,assign)BOOL                 isShowFolderView;
 @property(nonatomic,strong)UIControl            *backView;
+@property(nonatomic,strong)UIButton             *folderBtn;
+@property(nonatomic,strong)UITableView          *tbView;
+@property(nonatomic,strong)NSMutableArray       *dataArray;
 
 @end
 
@@ -34,28 +36,32 @@
 }
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
-    [self setup];
     [self creteBarButtonItem];
+    [self createNoteTableView];
 }
 
 -(void)setup{
     
     [super setup];
-    [self createNoteTableView];
     _isShowFolderView=NO;
-    [self sortTbView];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTbViewAction:) name:@"refreshTbView" object:nil];
-    [_tbView reloadData];
+    [self loadAllNotesAndSortup];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshTbViewAction:)
+                                                 name:@"refreshTbView"
+                                               object:nil];
 }
 
 //tbview排序
--(void)sortTbView{
+-(void)loadAllNotesAndSortup{
     
     NSString *folderName=[[NSUserDefaults standardUserDefaults] objectForKey:kCurrentFolderName];
     if (folderName.length==0||!folderName) {
         folderName=@"";
     }
+    //算法的优劣评估：1.时间复杂度 2.空间复杂度
+    //1.可行的，2.性能可不可行，3.是不会最优的
     NSArray *array=[[NoteManager shared] notesWithFolderName:folderName];
     _dataArray=[NSMutableArray arrayWithArray:array];
     [_dataArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -75,10 +81,11 @@
             return [n2.date compare:n1.date];
         }
     }];
+    [_tbView reloadData];
 }
 -(void)refreshTbViewAction:(NSNotification *)sender{
     
-    [self sortTbView];
+    [self loadAllNotesAndSortup];
     [_tbView reloadData];
 }
 -(FolderTableView *)folderTableView{
@@ -377,7 +384,7 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
         [_dataArray removeAllObjects];
         _dataArray=[NSMutableArray arrayWithArray:selectedNotes];
-        [self sortTbView];
+        [self loadAllNotesAndSortup];
         [_tbView reloadData];
     }
 }
@@ -553,6 +560,10 @@
         HUDError(error.localizedDescription)
     }
     [controller dismissViewControllerAnimated:YES completion:nil];
+}
+-(void)dealloc{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

@@ -30,8 +30,8 @@
 		851FA0781E555882001989E0 /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 851FA0641E555882001989E0 /* ShareSDK.bundle */; };
 		851FA0791E555882001989E0 /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 851FA0651E555882001989E0 /* ShareSDKConnector.framework */; };
 		851FA07B1E556A72001989E0 /* share_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851FA07A1E556A72001989E0 /* share_icon@2x.png */; };
+		853629FD1E56DA04009B6BB5 /* LaunchPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 853629FC1E56DA04009B6BB5 /* LaunchPasswordViewController.m */; };
 		855219531E4F5B5900DD5550 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 855219521E4F5B5900DD5550 /* menu.png */; };
-		855219561E504EBF00DD5550 /* SideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 855219551E504EBF00DD5550 /* SideMenu.m */; };
 		85DB81A71E4DFB680015A93D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DB81A61E4DFB680015A93D /* main.m */; };
 		85DB81B01E4DFB680015A93D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85DB81AE1E4DFB680015A93D /* Main.storyboard */; };
 		85DB81B21E4DFB680015A93D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85DB81B11E4DFB680015A93D /* Assets.xcassets */; };
@@ -201,9 +201,9 @@
 		851FA0641E555882001989E0 /* ShareSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDK.bundle; sourceTree = "<group>"; };
 		851FA0651E555882001989E0 /* ShareSDKConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKConnector.framework; sourceTree = "<group>"; };
 		851FA07A1E556A72001989E0 /* share_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share_icon@2x.png"; sourceTree = "<group>"; };
+		853629FB1E56DA04009B6BB5 /* LaunchPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchPasswordViewController.h; sourceTree = "<group>"; };
+		853629FC1E56DA04009B6BB5 /* LaunchPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchPasswordViewController.m; sourceTree = "<group>"; };
 		855219521E4F5B5900DD5550 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
-		855219541E504EBF00DD5550 /* SideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenu.h; sourceTree = "<group>"; };
-		855219551E504EBF00DD5550 /* SideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenu.m; sourceTree = "<group>"; };
 		85DB81A21E4DFB680015A93D /* PrivateNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrivateNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DB81A61E4DFB680015A93D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		85DB81AF1E4DFB680015A93D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -690,8 +690,6 @@
 		85DB81DB1E4DFC510015A93D /* View */ = {
 			isa = PBXGroup;
 			children = (
-				855219541E504EBF00DD5550 /* SideMenu.h */,
-				855219551E504EBF00DD5550 /* SideMenu.m */,
 				18F0070B1E5416B9008F0491 /* SideView.h */,
 				18F0070C1E5416B9008F0491 /* SideView.m */,
 				85DB81DC1E4DFC510015A93D /* FolderTableView.h */,
@@ -759,6 +757,8 @@
 			children = (
 				85DB81FA1E4DFC510015A93D /* AppDelegate.h */,
 				85DB81FB1E4DFC510015A93D /* AppDelegate.m */,
+				853629FB1E56DA04009B6BB5 /* LaunchPasswordViewController.h */,
+				853629FC1E56DA04009B6BB5 /* LaunchPasswordViewController.m */,
 				85DB81FC1E4DFC510015A93D /* BaseViewController.h */,
 				85DB81FD1E4DFC510015A93D /* BaseViewController.m */,
 				85DB81FE1E4DFC510015A93D /* MyTabBarController.h */,
@@ -1111,7 +1111,7 @@
 				TargetAttributes = {
 					85DB81A11E4DFB680015A93D = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = 4RM8PCALL7;
+						DevelopmentTeam = 9P9D2224EQ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1216,7 +1216,6 @@
 				85DB82A91E4DFC510015A93D /* Note.m in Sources */,
 				85DB82F81E4DFC510015A93D /* NSData+ImageContentType.m in Sources */,
 				85DB82A41E4DFC510015A93D /* EditViewController.m in Sources */,
-				855219561E504EBF00DD5550 /* SideMenu.m in Sources */,
 				85DB82EB1E4DFC510015A93D /* MASCompositeConstraint.m in Sources */,
 				85DB82FA1E4DFC510015A93D /* SDImageCache.m in Sources */,
 				85DB82ED1E4DFC510015A93D /* MASConstraintMaker.m in Sources */,
@@ -1270,6 +1269,7 @@
 				85DB82A31E4DFC510015A93D /* AddViewController.m in Sources */,
 				85DB82F11E4DFC510015A93D /* NSArray+MASAdditions.m in Sources */,
 				85DB82A81E4DFC510015A93D /* Folder.m in Sources */,
+				853629FD1E56DA04009B6BB5 /* LaunchPasswordViewController.m in Sources */,
 				85DB83121E4DFC510015A93D /* ZhRequest.m in Sources */,
 				85DB82F21E4DFC510015A93D /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				85DB82B61E4DFC510015A93D /* WCLPassWordView.m in Sources */,
@@ -1394,8 +1394,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4RM8PCALL7;
+				DEVELOPMENT_TEAM = 9P9D2224EQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Third/SMS_SDK",
@@ -1425,7 +1426,7 @@
 					"$(PROJECT_DIR)/Third/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zh.PrivateNote;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zh.PrivateNoteBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1435,8 +1436,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4RM8PCALL7;
+				DEVELOPMENT_TEAM = 9P9D2224EQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Third/SMS_SDK",
@@ -1459,7 +1461,7 @@
 					"$(PROJECT_DIR)/Third/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zh.PrivateNote;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zh.PrivateNoteBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

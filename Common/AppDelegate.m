@@ -17,9 +17,20 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import "WXApi.h"
 #import "WeiboSDK.h"
-//新浪微博SDK需要在项目Build Settings中的Other Linker Flags添加"-ObjC"
+#import "LaunchPasswordViewController.h"
+#import "WCLPassWordView.h"
+#import "SideView.h"
 
+//新浪微博SDK需要在项目Build Settings中的Other Linker Flags添加"-ObjC"
 @interface AppDelegate ()
+
+kStrongProperty(ListViewController,             list)
+kStrongProperty(LaunchPasswordViewController,   lp)
+kStrongProperty(UINavigationController,         navi)
+
+kStrongProperty(SideView,                       sideView)
+kStrongProperty(UIControl,                      back)
+@property(nonatomic,assign)BOOL                 hasShow;
 
 @end
 
@@ -29,10 +40,16 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [self configThirdSDK];
-    UINavigationController *navi=[[UINavigationController alloc]  initWithRootViewController:[ListViewController new]];
-    self.window.rootViewController=navi;
+    
     [UserDefault setInteger:0 forKey:@"seletedIndex"];
     [UserDefault synchronize];
+    [self shareToPlatform];
+    [self createRootViewController];
+    return YES;
+}
+
+-(void)shareToPlatform{
+    
     /**
      *  设置ShareSDK的appKey，如果尚未在ShareSDK官网注册过App，请移步到http://mob.com/login 登录后台进行应用注册
      *  在将生成的AppKey传入到此方法中。
@@ -104,7 +121,45 @@
                  break;
          }
      }];
-    return YES;
+}
+
+-(UINavigationController *)navi{//懒加载
+    
+    if(!_navi){
+        
+        ListViewController *list=[[ListViewController alloc] init];
+        _navi=[[UINavigationController alloc] initWithRootViewController:list];
+    }
+    return _navi;
+}
+-(void)createRootViewController{
+    
+    kWeakSelf(wkself)
+    NSString *launchPassword=[UserDefault objectForKey:kLuanchedPassword];
+    if(launchPassword||launchPassword.length!=0){
+        
+        self.lp=[[LaunchPasswordViewController alloc] initWithPasswordLength:4 vaildatePasswordCallBack:^(NSString *password) {
+            
+            if([password isEqualToString:launchPassword]){
+                
+
+                wkself.window.rootViewController=wkself.navi;
+            
+            }else{
+                
+                [wkself.lp.passwordView resignFirstResponder];
+                [wkself.lp createPasswordView];
+                HUDError(@"密码错误")
+            }
+        }];
+        
+        self.window.rootViewController=self.lp;
+        
+    }else{
+        
+        wkself.window.rootViewController=self.navi;
+        
+    }
 }
 -(void)configThirdSDK{
     
@@ -113,51 +168,72 @@
 }
 - (void)applicationWillResignActive:(UIApplication *)application {
     
-//    kWeakSelf(wkself)
-//    NSString *launchPassword=[UserDefault objectForKey:kLuanchedPassword];
+    kWeakSelf(wkself)
+    NSString *launchPassword=[UserDefault objectForKey:kLuanchedPassword];
     
-//    if(!kEmptyCheck(launchPassword)){
-//        
-//        self.lp=[[LaunchPasswordViewController alloc] initWithPasswordLength:4 vaildatePasswordCallBack:^(NSString *password) {
-//            
-//            if([password isEqualToString:launchPassword]){
-//                
-//                
-//                wkself.window.rootViewController=wkself.tabbar;
-//                
-//            }else{
-//                
-//                [wkself.lp.passwordView resignFirstResponder];
-//                [wkself.lp createPasswordView];
-//                HUDError(@"incorrect_password")
-//            }
-//        }];
-//        self.window.rootViewController=self.lp;
-//    }
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+    if(launchPassword||launchPassword.length!=0){
+        
+        self.lp=[[LaunchPasswordViewController alloc] initWithPasswordLength:4 vaildatePasswordCallBack:^(NSString *password) {
+            
+            if([password isEqualToString:launchPassword]){
+                
+            
+                wkself.window.rootViewController=wkself.navi;
+                
+            }else{
+                
+                [wkself.lp.passwordView resignFirstResponder];
+                [wkself.lp createPasswordView];
+                HUDError(@"密码错误")
+            }
+        }];
+        self.window.rootViewController=self.lp;
+    }
+
+}
+-(UIControl *)back{
+    
+    if(!_back){
+        
+        _back=[[UIControl alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
+        _back.alpha=0;
+        [_back addTarget:self action:@selector(hideMenu) forControlEvents:UIControlEventTouchUpInside];
+        _back.backgroundColor=[UIColor blackColor];
+    }
+    return _back;
+}
+-(SideView *)sideView{
+    
+    if(!_sideView){
+        
+        _sideView=[[SideView alloc] initWithFrame:CGRectMake(-kSideWidth,0,kSideWidth,kHeight)];
+        _sideView.backgroundColor=[UIColor whiteColor];
+    }
+    return _sideView;
+}
+-(void)showMenu{
+    
+    kWeakSelf(wkself)
+    [self.window addSubview:self.back];
+    [self.window addSubview:self.sideView];
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        wkself.sideView.frame=CGRectMake(0,0,kSideWidth,kHeight);
+        wkself.back.alpha=0.3;
+    }];
+    _hasShow=YES;
+}
+-(void)hideMenu{
+    
+    kWeakSelf(wkself)
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        wkself.sideView.frame=CGRectMake(-kSideWidth,0,kSideWidth,kHeight);
+        wkself.back.alpha=0;
+    }];
+    _hasShow=NO;
 }
 
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-}
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
 
 
 @end
