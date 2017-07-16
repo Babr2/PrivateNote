@@ -75,8 +75,8 @@ kStringProperty(imageURL)
     UIView *footView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,kHeight-300)];
     UILabel *timeLab=[[UILabel alloc] initWithFrame:CGRectZero];
     NSString *GMT=[UserDefault objectForKey:kLastSyncTime];
-    NSString *lastSyncTime=[Tool dateWithIntervalSince1970:GMT.integerValue];
-    timeLab.text=[NSString stringWithFormat:@"上次同步：%@",lastSyncTime];
+    
+    timeLab.text=[NSString stringWithFormat:@"上次同步：%@",GMT];
     timeLab.font=kFont(10);
     timeLab.textAlignment=NSTextAlignmentCenter;
     _timeLab=timeLab;
@@ -117,7 +117,7 @@ kStringProperty(imageURL)
     
     sender.enabled=NO;
     [UserDefault removeObjectForKey:kAccessToken];
-    [UserDefault removeObjectForKey:kLastSyncTime];
+//    [UserDefault removeObjectForKey:kLastSyncTime];
     [UserDefault removeObjectForKey:kNickName];
     [UserDefault removeObjectForKey:kHeadimageURL];
     [self.navigationController popViewControllerAnimated:NO];
@@ -364,6 +364,7 @@ kStringProperty(imageURL)
     
 //    sender.enabled=NO;
     id obj=[[NoteManager shared] jsonObjectWithAllNotes];
+    //json数据转data
     NSData *data=[NSJSONSerialization dataWithJSONObject:obj options:NSJSONWritingPrettyPrinted error:nil];
     NSString *token=[UserDefault objectForKey:kAccessToken];
     NSString *params=[NSString stringWithFormat:@"token=%@&identifier=1",token];
@@ -394,6 +395,7 @@ kStringProperty(imageURL)
         }
         NSInteger interval=[[obj objectForKey:@"last_sync_time"] integerValue];
         NSString *time=[Tool dateWithIntervalSince1970:interval];
+        
         [UserDefault setObject:time forKey:kLastSyncTime];
         [UserDefault synchronize];
         kWeakSelf(wkself)
@@ -456,7 +458,7 @@ kStringProperty(imageURL)
             
             HUDSuccess(@"同步成功")
             
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_sync(dispatch_get_main_queue(), ^{
                 
                 
                 wkself.timeLab.text=[NSString stringWithFormat:@"%@：%@",Localizable(@"上次同步"),time];
@@ -465,7 +467,6 @@ kStringProperty(imageURL)
         } error:^{
             
             HUDDismiss
-            
         }];
     });
 }

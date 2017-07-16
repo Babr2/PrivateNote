@@ -303,6 +303,7 @@
                                  url:[NSURL URLWithString:@"http://cgpointzero.top"]
                                title:@"私密记"
                                 type:SSDKContentTypeAuto];
+    [dict SSDKEnableUseClientShare];
     [ShareSDK share:type
          parameters:dict
      onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {

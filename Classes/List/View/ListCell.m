@@ -36,9 +36,10 @@
 -(void)configCellWithNote:(Note *)note{
     
     self.titleLab.text=note.title;
-    NSDateFormatter *formatter=[[NSDateFormatter alloc] init];
-    formatter.dateFormat=@"yyyy-MM-dd HH:mm:ss";
-    NSDate *date=[formatter dateFromString:note.date];
+    NSDateFormatter *fmt=[NSDateFormatter new];
+    fmt.dateFormat=@"yyyy-MM-dd HH:mm:ss";
+    NSDate *date=[NSDate dateWithTimeIntervalSince1970:[note.date integerValue]];
+    
     NSString *week=[Tool weekFromDate:date];
     _timeLab.text=[NSString stringWithFormat:@"%@ %@",note.date,week];
     if (note.top) {

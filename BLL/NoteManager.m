@@ -341,8 +341,10 @@ static NoteManager *mgr=nil;
             }
         }
         NSString *date=[dict objectForKey:@"date"];
-        
-        [self insertNoteId:nid title:title content:content date:date folder:folder imagesArray:tmp];
+        NSInteger dateValue=[date integerValue];
+        NSString *stringDate=[Tool dateWithIntervalSince1970:dateValue];
+        //解析出每个字段，根据字段在for in 循环中插入每一个日记
+        [self insertNoteId:nid title:title content:content date:stringDate folder:folder imagesArray:tmp];
 
         NSString *folderName=[folder copy];
         BOOL isDefault=[folderName isEqualToString:@"All Folders"]||

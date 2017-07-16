@@ -157,10 +157,6 @@
 -(void)signOutClickAction:(UIButton *)sender{
     
     sender.enabled=NO;
-    [UserDefault removeObjectForKey:kAccessToken];
-    [UserDefault removeObjectForKey:kLastSyncTime];
-    [UserDefault removeObjectForKey:kNickName];
-    [UserDefault removeObjectForKey:kHeadimageURL];
     [self refreshUI];
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -186,8 +182,8 @@
     NSInteger seletedIndex=[UserDefault integerForKey:@"seletedIndex"];
     if(indexPath.row==0){
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTbView" object:nil];
         [navi popToRootViewControllerAnimated:YES];
-        
     }else if(indexPath.row==1){
         
         if(seletedIndex!=indexPath.row){
@@ -213,6 +209,10 @@
     //记录按下侧边栏某个选项后的ListViewController选项
     [UserDefault setInteger:indexPath.row forKey:@"seletedIndex"];
     [UserDefault synchronize];
+}
+-(void)dealloc{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 

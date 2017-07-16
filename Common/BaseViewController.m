@@ -19,6 +19,11 @@
     
     [super viewDidLoad];
     [self setup];
+    
+}
+-(void)didReceiveMemoryWarning{
+    
+    
 }
 -(void)setup{
     

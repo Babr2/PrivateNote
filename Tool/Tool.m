@@ -214,11 +214,7 @@
     NSDateComponents *cmp=[calendar components:unit fromDate:date];
     NSUInteger week=cmp.weekday;
     NSArray *array=@[Localizable(@"星期天"), Localizable(@"星期一"),Localizable(@"星期二"),Localizable(@"星期三"),Localizable(@"星期四"),Localizable(@"星期五"),Localizable(@"星期六")];
-    NSInteger index=week-1;
-    if(index<-1){
-        
-        return @"";
-    }
-    return array[index];
+   
+    return array[week-1];
 }
 @end

@@ -172,6 +172,7 @@ kStrongProperty(UIButton,    forgetBtn)
             NSLog(@"%@",token);
         }
         NSString *lastSyncTime=[obj objectForKey:@"last_sync_time"];
+        NSString *time=[Tool dateWithIntervalSince1970:[lastSyncTime integerValue]];
         NSDictionary *info=[obj objectForKey:@"info"];
         NSString *headImageUrl=[info objectForKey:@"img"];
         NSString *nickName=[info objectForKey:@"nick_name"];
@@ -179,7 +180,7 @@ kStrongProperty(UIButton,    forgetBtn)
         
         if (lastSyncTime.length>0) {
             
-            [UserDefault setObject:lastSyncTime forKey:kLastSyncTime];
+            [UserDefault setObject:time forKey:kLastSyncTime];
         }
         if (headImageUrl.length>0) {
             

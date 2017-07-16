@@ -15,8 +15,8 @@
 #define kSinaAppkey                     @"4065993193"
 #define kSinaAppsecret                  @"81f0499e5d41c7bcd4a08f49f77da89c"
 
-#define kQQAppid                        @"1105964222"
-#define kQQAppkey                       @"XyWhRgJdLgbvuJ9u"
+#define kQQAppid                        @"1105915645"
+#define kQQAppkey                       @"Px11aX4K1ABBwCuO"
 
 #define kWechatAppid                    @"wx9239afbc220012c5"
 #define kWechatSecret                   @""

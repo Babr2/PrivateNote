@@ -1111,7 +1111,7 @@
 				TargetAttributes = {
 					85DB81A11E4DFB680015A93D = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = 4RM8PCALL7;
+						DevelopmentTeam = 9P9D2224EQ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1396,7 +1396,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4RM8PCALL7;
+				DEVELOPMENT_TEAM = 9P9D2224EQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Third/SMS_SDK",
@@ -1438,7 +1438,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4RM8PCALL7;
+				DEVELOPMENT_TEAM = 9P9D2224EQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Third/SMS_SDK",
